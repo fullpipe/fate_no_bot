@@ -1,6 +1,6 @@
 # fate_no_bot
 
-This bot will help you with your choice. And It could roll dice.
+This bot will help you with your choice. And It could roll a dice.
 
 ## todo
 
