@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: fate_no_bot-deployment
+  labels:
+    app: fate_no_bot
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: fate_no_bot
+  template:
+    metadata:
+      labels:
+        app: fate_no_bot
+    spec:
+      containers:
+        - name: fate_no_bot
+          image: fullpipe/fate_no_bot:latest
+          imagePullPolicy: Always
+          envFrom:
+            - secretRef:
+                name: fate-no-bot
