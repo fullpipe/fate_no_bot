@@ -38,6 +38,8 @@ func main() {
 		d100 = diceMenu.Text("🎲 d100")
 
 		dices = []tb.Btn{d4, d6, d8, d10, d12, d20, d100}
+
+		toDelete = make(map[int][]tb.Editable)
 	)
 
 	diceMenu.Reply(
@@ -47,7 +49,8 @@ func main() {
 	)
 
 	b.Handle("/roll", func(m *tb.Message) {
-		b.Reply(m, "Choose the dice", diceMenu)
+		sent, _ := b.Reply(m, "Choose the dice", diceMenu)
+		toDelete[m.Sender.ID] = append(toDelete[m.Sender.ID], sent)
 	})
 
 	b.Handle("/start", func(m *tb.Message) {
@@ -71,6 +74,13 @@ You also can roll some dice with /roll command or with message
 
 	for _, d := range dices {
 		b.Handle(&d, func(m *tb.Message) {
+			del, ok := toDelete[m.Sender.ID]
+			if ok {
+				for _, d := range del {
+					b.Delete(d)
+				}
+			}
+
 			b.Reply(m, fmt.Sprintf("You rolled: %d", rollText(m.Text)))
 		})
 	}
