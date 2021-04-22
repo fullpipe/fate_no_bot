@@ -51,13 +51,22 @@ func main() {
 	})
 
 	b.Handle("/start", func(m *tb.Message) {
-		b.Send(m.Chat, "I would help you with your choice. Send me options to choose from. For example:\n"+
-			"comma separated\n"+
-			"@fate_no_bot tea, coffee, water\n"+
-			"or just space separated\n"+
-			"@fate_no_bot tea coffee water\n"+
-			"you could mention people\n"+
-			"@fate_no_bot @one, @two, @someone")
+		b.Send(m.Chat, `
+I would help you with your choice. Send me options to choose from. For example:
+comma separated
+@fate_no_bot tea, coffee, water
+or just space separated
+@fate_no_bot tea coffee water
+you could mention people
+@fate_no_bot @one, @two, @someone
+		`)
+
+		b.Notify(m.Sender, tb.Typing)
+		time.Sleep(1 * time.Second)
+		b.Send(m.Chat, `
+You also can roll some dice with /roll command or with message
+@fate_no_bot 2d6 + 3d8
+		`)
 	})
 
 	for _, d := range dices {
