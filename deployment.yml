@@ -1,7 +1,8 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: fate-no-bot-deployment
+  name: fate-no-bot
+  namespace: fate-no-bot
   labels:
     app: fate-no-bot
 spec:
