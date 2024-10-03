@@ -2,7 +2,6 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: fate-no-bot
-  namespace: fate-no-bot
   labels:
     app: fate-no-bot
 spec:
@@ -17,8 +16,10 @@ spec:
     spec:
       containers:
         - name: fate-no-bot
-          image: fullpipe/fate_no_bot:latest
+          image: registry.gitlab.com/fullpipe/registry/fate_no_bot:latest
           imagePullPolicy: Always
           envFrom:
             - secretRef:
                 name: fate-no-bot
+      imagePullSecrets:
+        - name: gitlab-registry-secret

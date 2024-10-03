@@ -4,7 +4,6 @@ import (
 	"errors"
 	"fmt"
 	"log"
-	"math/rand"
 	"os"
 	"strings"
 	"time"
@@ -39,7 +38,7 @@ func main() {
 
 		dices = []tb.Btn{d4, d6, d8, d10, d12, d20, d100}
 
-		toDelete = make(map[int][]tb.Editable)
+		toDelete = make(map[int64][]tb.Editable)
 	)
 
 	diceMenu.Reply(
@@ -127,7 +126,7 @@ func choose(text string) (string, error) {
 		return "", errors.New("Nothing to choose")
 	}
 
-	choice := choices[rand.Intn(len(choices))]
+	choice := choices[RandomInt(len(choices))]
 
 	return strings.TrimSpace(choice), nil
 }

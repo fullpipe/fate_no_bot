@@ -1,21 +1,18 @@
-FROM golang AS builder
+# syntax = docker.io/docker/dockerfile:experimental
+FROM golang as build
 
 WORKDIR /app
+ENV CGO_ENABLED=0
+
+COPY go.mod go.sum ./
+RUN go mod download
 
 COPY . .
 
-RUN GO111MODULE=on CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -a -installsuffix cgo -ldflags="-w -s"
+RUN go build -a -installsuffix cgo -ldflags="-w -s" -o /go/bin/app
 
-FROM alpine
 
-RUN apk update \
-        && apk upgrade \
-        && apk add --no-cache \
-        ca-certificates \
-        && update-ca-certificates 2>/dev/null || true
-
-COPY --from=builder /app/fate_no_bot /go/bin/fate_no_bot
-
-ENV TELEGRAM_TOKEN YOUR_TOKEN_FROM_BOTFATHER
-
-ENTRYPOINT ["/go/bin/fate_no_bot"]
+FROM scratch as release
+COPY --from=build /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
+COPY --from=build /go/bin/app /go/bin/app
+ENTRYPOINT ["/go/bin/app"]

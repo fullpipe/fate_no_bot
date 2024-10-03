@@ -1,0 +1,9 @@
+version: '3'
+
+tasks:
+  build:
+    cmds:
+      - docker build --platform=linux/amd64 -t registry.gitlab.com/fullpipe/registry/fate_no_bot .
+  push:
+    cmds:
+      - docker push registry.gitlab.com/fullpipe/registry/fate_no_bot:latest

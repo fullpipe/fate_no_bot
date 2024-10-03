@@ -2,7 +2,6 @@ package main
 
 import (
 	"log"
-	"math/rand"
 	"regexp"
 	"strconv"
 )
@@ -30,7 +29,7 @@ func rollText(text string) int {
 func roll(num int, dice int) int {
 	sum := 0
 	for num > 0 {
-		sum += 1 + rand.Intn(dice-1)
+		sum += 1 + RandomInt(dice)
 		num--
 	}
 
